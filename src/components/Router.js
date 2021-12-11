@@ -5,7 +5,7 @@ import Home from "../pages/Home"
 
 
 const AppRouter = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     return (
         <Router>
             <Routes>
