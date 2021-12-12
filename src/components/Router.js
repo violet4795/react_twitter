@@ -3,7 +3,6 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Auth from "../pages/Auth"
 import Home from "../pages/Home"
 
-
 const AppRouter = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     return (
