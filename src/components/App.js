@@ -5,6 +5,7 @@ import AppRouter from "components/Router";
 import { authService } from "fbase";
 
 function App() {
+  const [ init, setInit ] = useState(false);
   const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   
   //https://ko.reactjs.org/docs/hooks-effect.html
@@ -12,14 +13,23 @@ function App() {
   //렌더링 될떄마다 effect가 발동되는것을 막을 수 있다.
   //빈배열을 넘긴다면, effect가 일어나지 않음을 의미
   useEffect(() => {
-    authService.onAuthStateChanged((user) => console.log(user));
+    authService.onAuthStateChanged((user) => {
+      if(user){
+        setIsLoggedIn(user);
+      }else{
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
   }, [])
 
   
-  return <>
-  <AppRouter isLoggedIn={isLoggedIn} />
-  <footer> &copy; {new Date().getFullYear()} React Twitter </footer>
-  </>
+  return (
+    <>
+      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "initializing..."}
+      <footer> &copy; {new Date().getFullYear()} React Twitter </footer>
+    </>
+  )
 }
 
 export default App;
