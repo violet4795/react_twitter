@@ -18,10 +18,10 @@ const AppRouter = ({isLoggedIn}) => {
                     <Route exact path="/" element={<Auth/>} />
                 )
                 }
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="*" element={<Navigate to="/?" />} />
             </Routes>
         </Router>
     )
 }
-
+  
 export default AppRouter;
