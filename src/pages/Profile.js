@@ -21,7 +21,7 @@ const Profile = () => {
     const onLogOutClick = () => {
         authService.signOut();
         navigate("/");
-    }
+    }  
     return (
         <>
             <button onClick={onLogOutClick}>Log Out</button>
