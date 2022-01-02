@@ -1,13 +1,14 @@
 // import logo from './logo.svg';
 // import './App.css';
-import { useEffect, useState } from "react";
-import AppRouter from "components/Router";
-import { authService } from "fbase";
+import { useEffect, useState } from "react"
+import AppRouter from "components/Router"
+import { authService } from "fbase"
 
 function App() {
-  const [ init, setInit ] = useState(false);
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-  
+  const [ init, setInit ] = useState(false)
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+  const [userObj, setUserObj] = useState(null)
+
   //https://ko.reactjs.org/docs/hooks-effect.html
   //두번째 인자로 배열을 넘겨서, 배열안의 변수가 변하지 않는다면 effect를 막는식으로
   //렌더링 될떄마다 effect가 발동되는것을 막을 수 있다.
@@ -15,9 +16,10 @@ function App() {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if(user){
-        setIsLoggedIn(user);
+        setIsLoggedIn(user)
+        setUserObj(user)
       }else{
-        setIsLoggedIn(false);
+        setIsLoggedIn(false)
       }
       setInit(true);
     });
