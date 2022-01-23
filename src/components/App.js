@@ -28,7 +28,11 @@ function App() {
   
   return (
     <>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "initializing..."}
+      {init ? (
+        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> 
+      ) : ( 
+        "initializing..." 
+      )}
       <footer> &copy; {new Date().getFullYear()} React Twitter </footer>
     </>
   )
