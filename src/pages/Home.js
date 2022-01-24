@@ -1,22 +1,29 @@
 import { dbService } from "fbase";
 import { useEffect, useState } from "react";
+import Tweet from "components/Tweet";
 
 const Home = ({ userObj }) => {
     console.log( userObj );
     const [tweet, setTweet] = useState("");
     const [tweets, setTweets] = useState([]);
 
-    const getTweets = async () => {
-        const dbTweets = await dbService.collection("tweet").get();
-        dbTweets.forEach(doc => {
-            const tweetObject = { ...doc.data(), id: doc.id };
-            //여기서  prev란? setState 에서 제공하는 이전 객체값.
-            setTweets( prev =>  [ tweetObject, ...prev ])
-        })
-    }
+    // const getTweets = async () => {
+    //     const dbTweets = await dbService.collection("tweet").get();
+    //     dbTweets.forEach(doc => {
+    //         const tweetObject = { ...doc.data(), id: doc.id };
+    //         //여기서  prev란? setState 에서 제공하는 이전 객체값.
+    //         setTweets( prev =>  [ tweetObject, ...prev ])
+    //     })
+    // }
 
     useEffect(() =>{
-        getTweets()
+        dbService.collection("tweet").onSnapshot((snapshot) => {
+            const newArray = snapshot.docs.map((document) =>({
+                id: document.id,
+                ...document.data(),
+            }));
+            setTweets(newArray);
+        });
     }, []);
 
     
@@ -52,9 +59,11 @@ const Home = ({ userObj }) => {
             </form>
             <div>
                 { tweets.map(tweet => (
-                    <div key={tweet.id}>
-                        <h4>{tweet.text}</h4>
-                    </div>
+                    <Tweet 
+                        key={tweet.id} 
+                        tweetObj={tweet}
+                        isOwner={tweet.creatorId === userObj.uid}
+                    />
                 ))}
             </div>
         </>
