@@ -19,7 +19,7 @@ const Auth = () => {
         }
     }
 
-    const onSubmit = async e =>{
+    const onSubmit = async e => {
         e.preventDefault();
         try{
             let data;
@@ -42,12 +42,22 @@ const Auth = () => {
             target: { name },
         } = e;
         let provider;
+        
+
+        //팝업창 닫을 시 에러발생
+        //https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth
+        //참고하여 해결
         if ( name === 'google' ) {
             provider = new firebaseInstance.auth.GoogleAuthProvider();
         } else if ( name === 'github' ) {
             provider = new firebaseInstance.auth.GithubAuthProvider();
         }
-        const data = await authService.signInWithPopup(provider);
+        
+        const data = await authService.signInWithPopup(provider).then(function(result){
+            console.log(result); // resolve
+        }, function(error){
+            console.log(error); // reject
+        });
         console.log(data);
     }
     return (
