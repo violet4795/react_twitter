@@ -1,12 +1,12 @@
 // import logo from './logo.svg';
 // import './App.css';
-import { useEffect, useState } from "react"
-import AppRouter from "components/Router"
-import { authService } from "fbase"
+import {useEffect, useState} from 'react'
+import AppRouter from 'components/Router'
+import {authService} from 'fbase'
 
 function App() {
-  const [ init, setInit ] = useState(false)
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+  const [init, setInit] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userObj, setUserObj] = useState(null)
 
   //https://ko.reactjs.org/docs/hooks-effect.html
@@ -14,27 +14,26 @@ function App() {
   //렌더링 될떄마다 effect가 발동되는것을 막을 수 있다.
   //빈배열을 넘긴다면, effect가 일어나지 않음을 의미
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if(user){
+    authService.onAuthStateChanged(user => {
+      if (user) {
         setIsLoggedIn(user)
         setUserObj(user)
-      }else{
+      } else {
         setIsLoggedIn(false)
       }
-      setInit(true);
-    });
+      setInit(true)
+    })
   }, [])
 
-  
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> 
-      ) : ( 
-        "initializing..." 
+        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+      ) : (
+        'initializing...'
       )}
     </>
   )
 }
 
-export default App;
+export default App

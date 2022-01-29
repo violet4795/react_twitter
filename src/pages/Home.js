@@ -1,12 +1,12 @@
-import { dbService } from "fbase";
-import { useEffect, useState } from "react";
-import Tweet from "components/Tweet";
+import {dbService} from 'fbase'
+import {useEffect, useState} from 'react'
+import Tweet from 'components/Tweet'
 
-const Home = ({ userObj }) => {
-    console.log( userObj );
-    const [tweet, setTweet] = useState("");
-    const [tweets, setTweets] = useState([]);
-    const [image, setImage] = useState({});
+const Home = ({userObj}) => {
+    console.log(userObj)
+    const [tweet, setTweet] = useState('')
+    const [tweets, setTweets] = useState([])
+    const [attachment, setAttachment] = useState('')
     // const getTweets = async () => {
     //     const dbTweets = await dbService.collection("tweet").get();
     //     dbTweets.forEach(doc => {
@@ -16,65 +16,79 @@ const Home = ({ userObj }) => {
     //     })
     // }
 
-    useEffect(() =>{
-        dbService.collection("tweet").onSnapshot((snapshot) => {
-            const newArray = snapshot.docs.map((document) =>({
+    useEffect(() => {
+        dbService.collection('tweet').onSnapshot(snapshot => {
+            const newArray = snapshot.docs.map(document => ({
                 id: document.id,
                 ...document.data(),
-            }));
-            setTweets(newArray);
-        });
-    }, []);
+            }))
+            setTweets(newArray)
+        })
+    }, [])
 
-    
-    const onSubmit = async (event) => {
-        event.preventDefault();
-        await dbService.collection("tweet").add({
+    const onSubmit = async event => {
+        event.preventDefault()
+        /* await dbService.collection('tweet').add({
             text: tweet,
             createdAt: Date.now(),
-            creatorId: userObj.uid
+            creatorId: userObj.uid,
         })
-        setTweet("")
+        setTweet('') */
     }
 
-    const onChange = (event) => {
-        event.preventDefault();
+    const onChange = event => {
+        event.preventDefault()
         const {
-            target: { value },
-        } = event;
-        setTweet(value);
-    };
-
-    const onFileChange = (event) => {
-        const {
-            target: { files },
-        } = event;
-        const file = files[0];
-        console.log(file);
-        const reader = new FileReader();
-        reader.onloadend = (finishedEvent) => {
-            console.log(finishedEvent);
-        };
-        reader.readAsDataURL(file);
-        setImage(file)
+            target: {value},
+        } = event
+        setTweet(value)
     }
+
+    const onFileChange = event => {
+        const {
+            target: {files},
+        } = event
+        const file = files[0]
+
+        const reader = new FileReader()
+        reader.onloadend = finishedEvent => {
+            const {
+                currentTarget: {result},
+            } = finishedEvent
+            setAttachment(result)
+        }
+        reader.readAsDataURL(file)
+    }
+
+    const onClearAttachment = () => setAttachment('')
+
     return (
         <>
             <form onSubmit={onSubmit}>
                 <input
-                value={tweet}
-                onChange={onChange}
-                type="text"
-                placeholder="What's on your mind?"
-                maxLength={120}
+                    value={tweet}
+                    onChange={onChange}
+                    type="text"
+                    placeholder="What's on your mind?"
+                    maxLength={120}
                 />
-                <input type="file" accept=".jpg, .jpeg, .png" onChange={onFileChange}/>
+                <input
+                    type="file"
+                    accept=".jpg, .jpeg, .png"
+                    onChange={onFileChange}
+                />
                 <input type="submit" value="Tweet" />
+                {attachment && (
+                    <div>
+                        <img src={attachment} width="50px" height="50px" />
+                        <button onClick={onClearAttachment}>Clear</button>
+                    </div>
+                )}
             </form>
             <div>
-                { tweets.map(tweet => (
-                    <Tweet 
-                        key={tweet.id} 
+                {tweets.map(tweet => (
+                    <Tweet
+                        key={tweet.id}
                         tweetObj={tweet}
                         isOwner={tweet.creatorId === userObj.uid}
                     />
@@ -84,4 +98,4 @@ const Home = ({ userObj }) => {
     )
 }
 
-export default Home;
+export default Home
