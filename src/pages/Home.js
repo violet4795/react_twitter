@@ -6,7 +6,7 @@ const Home = ({ userObj }) => {
     console.log( userObj );
     const [tweet, setTweet] = useState("");
     const [tweets, setTweets] = useState([]);
-
+    const [image, setImage] = useState({});
     // const getTweets = async () => {
     //     const dbTweets = await dbService.collection("tweet").get();
     //     dbTweets.forEach(doc => {
@@ -45,6 +45,19 @@ const Home = ({ userObj }) => {
         setTweet(value);
     };
 
+    const onFileChange = (event) => {
+        const {
+            target: { files },
+        } = event;
+        const file = files[0];
+        console.log(file);
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent) => {
+            console.log(finishedEvent);
+        };
+        reader.readAsDataURL(file);
+        setImage(file)
+    }
     return (
         <>
             <form onSubmit={onSubmit}>
@@ -55,6 +68,7 @@ const Home = ({ userObj }) => {
                 placeholder="What's on your mind?"
                 maxLength={120}
                 />
+                <input type="file" accept=".jpg, .jpeg, .png" onChange={onFileChange}/>
                 <input type="submit" value="Tweet" />
             </form>
             <div>
