@@ -1,6 +1,7 @@
-import {dbService} from 'fbase'
+import {dbService, storageService} from 'fbase'
 import {useEffect, useState} from 'react'
 import Tweet from 'components/Tweet'
+import {v4 as uuidv4} from 'uuid'
 
 const Home = ({userObj}) => {
     console.log(userObj)
@@ -34,6 +35,25 @@ const Home = ({userObj}) => {
             creatorId: userObj.uid,
         })
         setTweet('') */
+        let attachmentUrl = ''
+        if (attachment !== '') {
+            const attachmentRef = storageService
+                .ref()
+                .child(`${userObj.uid}/${uuidv4()}`)
+            const response = await attachmentRef.putString(
+                attachment,
+                'data_url',
+            )
+            attachmentUrl = await response.ref.getDownloadURL()
+        }
+        await dbService.collection('tweet').add({
+            text: tweet,
+            createdAt: Date.now(),
+            creatorId: userObj.uid,
+            attachmentUrl,
+        })
+        setTweet('')
+        setAttachment('')
     }
 
     const onChange = event => {
