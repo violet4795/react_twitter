@@ -35,7 +35,6 @@ const Tweet = ({tweetObj, isOwner}) => {
     // const onOKClick = async (tweetObj) => {
     //     const flag = window.confirm('수정하시겠습니까?');
     //     if(flag) {
-    //         console.log(tweetObj)
     //         await dbService.doc(`tweet/${tweetObj.id}`).update({text: tempTweet});
     //         setEditFlag(false);
     //     }
@@ -44,7 +43,6 @@ const Tweet = ({tweetObj, isOwner}) => {
     const onOKClick = async () => {
         const flag = window.confirm('수정하시겠습니까?')
         if (flag) {
-            console.log(tweetObj)
             await dbService
                 .doc(`tweet/${tweetObj.id}`)
                 .update({text: tempTweet})
