@@ -42,9 +42,9 @@ jobs:
         with:
           ref: "gh-pages"
           clean: false
-#       - name: Remove Directories
-#         run: |
-#           rm -rf .
+      - name: Remove Directories
+        run: |
+          rm -rf *
       - name: Add & Commit
         uses: EndBug/add-and-commit@v4.4.0
         with:
