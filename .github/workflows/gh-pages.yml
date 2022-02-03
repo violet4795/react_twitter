@@ -3,7 +3,7 @@ name: GitHub Pages
 on:
   push:
     branches:
-      - violet4795-patch-1
+      - master
   pull_request:
 
 jobs:
