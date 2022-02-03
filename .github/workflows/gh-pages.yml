@@ -13,7 +13,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-
+          
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -36,11 +36,42 @@ jobs:
         env:
           CI: false
 #       - run: yarn export
-      - run: yarn deploy
+#       - run: yarn deploy
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: "gh-pages"
+          clean: true
+#       - name: Remove Directories
+#         run: |
+#           rm -rf *
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v4.4.0
+        with:
+          add: '.'
+          ref: "gh-pages"
+          force: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push commit
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          branch: "gh-pages"
+          force: true
+#       - name: Deploy
+#         uses: peaceiris/actions-gh-pages@v3
+#         if: ${{ github.ref == 'refs/heads/main' }}
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./build
+          
+#       - name: Deploy with gh-pages
+#         run: |
+#           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+#           npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
