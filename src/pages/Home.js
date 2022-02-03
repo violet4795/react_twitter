@@ -14,7 +14,7 @@ const Home = ({userObj}) => {
     //         setTweets( prev =>  [ tweetObject, ...prev ])
     //     })
     // }
-
+         
     useEffect(() => {
         dbService.collection('tweet').onSnapshot(snapshot => {
             const newArray = snapshot.docs.map(document => ({
