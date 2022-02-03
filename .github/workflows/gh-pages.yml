@@ -33,6 +33,8 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - run: yarn build
+        env:
+          CI: false
       - run: yarn export
 
       - name: Deploy
