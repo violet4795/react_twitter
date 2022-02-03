@@ -13,11 +13,6 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          submodules: recursive
-          clean: true
-          lfs: false
           
       - name: Setup Node
         uses: actions/setup-node@v2
