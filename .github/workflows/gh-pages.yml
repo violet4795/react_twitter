@@ -3,7 +3,7 @@ name: github pages
 on:
   push:
     branches:
-      - main
+      - violet4795-patch-1
 
 jobs:
   deploy:
@@ -32,3 +32,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
+          
