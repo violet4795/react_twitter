@@ -36,24 +36,34 @@ jobs:
           CI: false
 #       - run: yarn export
 #       - run: yarn deploy
-      - name: Checkout gh-pages branch
-        uses: actions/checkout@v2
+
+# as-is deploy here 
+#       - name: Checkout gh-pages branch
+#         uses: actions/checkout@v2
+#         with:
+#           ref: "gh-pages"
+#           clean: false
+#       - name: Add & Commit
+#         uses: EndBug/add-and-commit@v4.4.0
+#         with:
+#           add: 'build/build'
+#           ref: "gh-pages"
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Push commit
+#         uses: ad-m/github-push-action@master
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           branch: "gh-pages"
+#           force: true
+          
+# to-be deploy here
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
-          ref: "gh-pages"
-          clean: false
-      - name: Add & Commit
-        uses: EndBug/add-and-commit@v4.4.0
-        with:
-          add: 'build/build'
-          ref: "gh-pages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push commit
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "gh-pages"
-          force: true
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build # The folder the action should deploy.
+          
 #       - name: Deploy
 #         uses: peaceiris/actions-gh-pages@v3
 #         if: ${{ github.ref == 'refs/heads/main' }}
