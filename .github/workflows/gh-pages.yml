@@ -31,6 +31,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --frozen-lockfile
+      
+       # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "REACT_APP_API_KEY=$REACT_APP_API_KEY" >> .env.production
+          echo "REACT_APP_AUTH_DOMAIN=$REACT_APP_AUTH_DOMAIN" >> .env.production
+          echo "REACT_APP_PROJECT_ID=$REACT_APP_PROJECT_ID" >> .env.production
+          echo "REACT_APP_STORAGE_BUCKET=$REACT_APP_STORAGE_BUCKET" >> .env.production
+          echo "REACT_APP_MESSAGING_SENDER_ID=$REACT_APP_MESSAGING_SENDER_ID" >> .env.production
+          echo "REACT_APP_APP_ID=$REACT_APP_APP_ID" >> .env.production
+        env:
+          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+          REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
+          REACT_APP_PROJECT_ID: ${{ secrets.REACT_APP_PROJECT_ID }}
+          REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
+          REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
+          REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+          
       - run: yarn build
         env:
           CI: false
