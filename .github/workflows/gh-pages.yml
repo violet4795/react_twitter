@@ -13,7 +13,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-          
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -30,37 +30,58 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-
       - run: yarn install --frozen-lockfile
+      
+       # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "REACT_APP_API_KEY=$REACT_APP_API_KEY" >> .env.production
+          echo "REACT_APP_AUTH_DOMAIN=$REACT_APP_AUTH_DOMAIN" >> .env.production
+          echo "REACT_APP_PROJECT_ID=$REACT_APP_PROJECT_ID" >> .env.production
+          echo "REACT_APP_STORAGE_BUCKET=$REACT_APP_STORAGE_BUCKET" >> .env.production
+          echo "REACT_APP_MESSAGING_SENDER_ID=$REACT_APP_MESSAGING_SENDER_ID" >> .env.production
+          echo "REACT_APP_APP_ID=$REACT_APP_APP_ID" >> .env.production
+        env:
+          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+          REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
+          REACT_APP_PROJECT_ID: ${{ secrets.REACT_APP_PROJECT_ID }}
+          REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
+          REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
+          REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+          
       - run: yarn build
         env:
           CI: false
 #       - run: yarn export
 #       - run: yarn deploy
-      - name: Checkout gh-pages branch
-        uses: actions/checkout@v2
-        with:
-          ref: "gh-pages"
-          clean: true
-#       - name: Remove Directories
-#         run: |
-#           rm -rf *
 
-
-      - name: Add & Commit
-        uses: EndBug/add-and-commit@v4.4.0
+# as-is deploy here 
+#       - name: Checkout gh-pages branch
+#         uses: actions/checkout@v2
+#         with:
+#           ref: "gh-pages"
+#           clean: false
+#       - name: Add & Commit
+#         uses: EndBug/add-and-commit@v4.4.0
+#         with:
+#           add: 'build/build'
+#           ref: "gh-pages"
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Push commit
+#         uses: ad-m/github-push-action@master
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           branch: "gh-pages"
+#           force: true
+          
+# to-be deploy here
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
-          add: '.'
-          ref: "gh-pages"
-          force: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push commit
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "gh-pages"
-          force: true
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build # The folder the action should deploy.
+          
 #       - name: Deploy
 #         uses: peaceiris/actions-gh-pages@v3
 #         if: ${{ github.ref == 'refs/heads/main' }}
@@ -74,4 +95,3 @@ jobs:
 #           npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
 #         env:
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
