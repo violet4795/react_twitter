@@ -14,7 +14,7 @@ const Home = ({userObj}) => {
     //         setTweets( prev =>  [ tweetObject, ...prev ])
     //     })
     // }
-         
+
     useEffect(() => {
         dbService.collection('tweet').onSnapshot(snapshot => {
             const newArray = snapshot.docs.map(document => ({
@@ -26,9 +26,9 @@ const Home = ({userObj}) => {
     }, [])
 
     return (
-        <>
+        <div className="container">
             <TweetFactory userObj={userObj} />
-            <div>
+            <div style={{marginTop: 30}}>
                 {tweets.map(tweet => (
                     <Tweet
                         key={tweet.id}
@@ -37,7 +37,7 @@ const Home = ({userObj}) => {
                     />
                 ))}
             </div>
-        </>
+        </div>
     )
 }
 

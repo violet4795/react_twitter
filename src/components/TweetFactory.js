@@ -2,6 +2,8 @@ import {v4 as uuidv4} from 'uuid'
 import {storageService} from 'fbase'
 import {useState} from 'react'
 import {dbService} from 'fbase'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faPlus, faTimes} from '@fortawesome/free-brands-svg-icons'
 
 const TweetFactory = ({userObj}) => {
     const [tweet, setTweet] = useState('')
@@ -35,6 +37,9 @@ const TweetFactory = ({userObj}) => {
 
     const onSubmit = async event => {
         event.preventDefault()
+        if (tweet === '') {
+            return
+        }
         /* await dbService.collection('tweet').add({
             text: tweet,
             createdAt: Date.now(),
