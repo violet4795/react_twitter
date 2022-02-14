@@ -26,29 +26,39 @@ const Auth = () => {
     }
 
     return (
-        <div className="authContainer">
-            <FontAwesomeIcon
-                icon={faTwitter}
-                color={'#04AAFF'}
-                size="3x"
-                style={{marginBotton: 30}}
-            />
-            <AuthForm />
-            <div className="authBtns">
-                <button
-                    onClick={onSocialClick}
-                    name="google"
-                    className="authBtn"
-                >
-                    Continue with Google <FontAwesomeIcon icon={faGoogle} />
-                </button>
-                <button
-                    onClick={onSocialClick}
-                    name="github"
-                    className="authBtn"
-                >
-                    Continue with Github <FontAwesomeIcon icon={faGithub} />
-                </button>
+        <div
+        style={{
+            maxWidth: 890,
+            width: '100%',
+            margin: '0 auto',
+            marginTop: 80,
+            display: 'flex',
+            justifyContent: 'center',
+        }}>
+            <div className="authContainer">
+                <FontAwesomeIcon
+                    icon={faTwitter}
+                    color={'#04AAFF'}
+                    size="3x"
+                    style={{marginBotton: 30}}
+                />
+                <AuthForm />
+                <div className="authBtns">
+                    <button
+                        onClick={onSocialClick}
+                        name="google"
+                        className="authBtn"
+                    >
+                        Continue with Google <FontAwesomeIcon icon={faGoogle} />
+                    </button>
+                    <button
+                        onClick={onSocialClick}
+                        name="github"
+                        className="authBtn"
+                    >
+                        Continue with Github <FontAwesomeIcon icon={faGithub} />
+                    </button>
+                </div>
             </div>
         </div>
     )
