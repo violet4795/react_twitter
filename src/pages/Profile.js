@@ -64,17 +64,26 @@ const Profile = ({userObj, refreshUser}) => {
     // }
 
     return (
-        <>
-            <form onSubmit={onSubmit}>
+        <div className="container">
+            <form onSubmit={onSubmit} className="profileForm">
                 <input
                     type="text"
                     onChange={onChange}
                     placeholder="Display name"
                     value={newDisplayName}
+                    autoFocus
+                    className="formInput"
                 />
-                <input type="submit" value="Update Profile" />
+                <input
+                    type="submit"
+                    value="Update Profile"
+                    className="formBtn"
+                    style={{marginTop: 10}}
+                />
             </form>
-            <button onClick={onLogOutClick}>Log Out</button>
+            <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+                Log Out
+            </span>
             {/* <div>
                 {tweets.map(tweet => (
                     <Tweet
@@ -84,7 +93,7 @@ const Profile = ({userObj, refreshUser}) => {
                     />
                 ))}
             </div> */}
-        </>
+        </div>
     )
 }
 

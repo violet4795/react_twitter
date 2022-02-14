@@ -16,37 +16,41 @@ const Home = ({userObj}) => {
     // }
 
     useEffect(() => {
-        dbService.collection('tweet').onSnapshot(snapshot => {
-            const newArray = snapshot.docs.map(document => ({
-                id: document.id,
-                ...document.data(),
-            }))
-            setTweets(newArray)
-        })
+        dbService
+            .collection('tweet')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(snapshot => {
+                const newArray = snapshot.docs.map(document => ({
+                    id: document.id,
+                    ...document.data(),
+                }))
+                setTweets(newArray)
+            })
     }, [])
 
     return (
         <div
-                        style={{
-                            maxWidth: 890,
-                            width: '100%',
-                            margin: '0 auto',
-                            marginTop: 80,
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}>
-        <div className="container">
-            <TweetFactory userObj={userObj} />
-            <div style={{marginTop: 30}}>
-                {tweets.map(tweet => (
-                    <Tweet
-                        key={tweet.id}
-                        tweetObj={tweet}
-                        isOwner={tweet.creatorId === userObj.uid}
-                    />
-                ))}
+            style={{
+                maxWidth: 890,
+                width: '100%',
+                margin: '0 auto',
+                marginTop: 80,
+                display: 'flex',
+                justifyContent: 'center',
+            }}
+        >
+            <div className="container">
+                <TweetFactory userObj={userObj} />
+                <div style={{marginTop: 30}}>
+                    {tweets.map(tweet => (
+                        <Tweet
+                            key={tweet.id}
+                            tweetObj={tweet}
+                            isOwner={tweet.creatorId === userObj.uid}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
         </div>
     )
 }

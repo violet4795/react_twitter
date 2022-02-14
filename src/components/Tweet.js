@@ -1,5 +1,7 @@
 import {dbService, storageService} from 'fbase'
 import {useState} from 'react'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrash, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
 
 const Tweet = ({tweetObj, isOwner}) => {
     const [tempTweet, setTempTweet] = useState(tweetObj.text)
@@ -58,12 +60,28 @@ const Tweet = ({tweetObj, isOwner}) => {
     }
 
     return (
-        <div>
+        <div className="nweet">
             {editFlag ? (
                 <>
-                    <input type="text" value={tempTweet} onChange={onChange} />
-                    <button onClick={onCancelClick}>Cancel</button>
-                    <button onClick={onOKClick}>OK</button>
+                    <div className="container nweetEdit">
+                        <input
+                            type="text"
+                            value={tempTweet}
+                            onChange={onChange}
+                            placeholder="Edit your tweet"
+                            autoFocus
+                            className="formInput"
+                        />
+                        <button onClick={onOKClick} className="formBtn">
+                            OK
+                        </button>
+                    </div>
+                    <button
+                        onClick={onCancelClick}
+                        className="formBtn cancelBtn"
+                    >
+                        Cancel
+                    </button>
                 </>
             ) : (
                 <>
@@ -76,12 +94,14 @@ const Tweet = ({tweetObj, isOwner}) => {
                         />
                     )}
                     {isOwner && (
-                        <>
-                            <button onClick={onDeleteClick}>
-                                Delete Tweet
-                            </button>
-                            <button onClick={onEditClick}>Edit Tweet</button>
-                        </>
+                        <div className="nweet__actions">
+                            <span onClick={onDeleteClick}>
+                                <FontAwesomeIcon icon={faTrash} />
+                            </span>
+                            <span onClick={onEditClick}>
+                                <FontAwesomeIcon icon={faPencilAlt} />
+                            </span>
+                        </div>
                     )}
                 </>
             )}
